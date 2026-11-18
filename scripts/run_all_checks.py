@@ -5,7 +5,7 @@ from pathlib import Path
 
 def main():
     root = Path(__file__).resolve().parents[1]
-    skill_dir = root / 'wordpress-theme-visual-builder'
+    skill_dir = root / 'frame-to-press'
     errors = []
 
     print('=== 1. Validating Agent Skill Structure ===')
@@ -49,6 +49,27 @@ def main():
             break
     else:
         print(f'JavaScript syntax check passed ({len(js_files)} files checked).')
+
+    print('=== 5. Running FrameToPress Visual Builder PHP Regression Tests ===')
+    php_test = root / 'tests' / 'test_builder_regression.php'
+    if php_test.is_file():
+        try:
+            res = subprocess.run(['php', str(php_test)], capture_output=True, text=True)
+            if res.returncode != 0:
+                errors.append(f'PHP regression suite failed:\n{res.stdout}\n{res.stderr}')
+            else:
+                print('PHP regression suite passed (15/15 tests OK).')
+        except FileNotFoundError:
+            print('PHP not installed, skipping PHP regression suite.')
+
+    print('=== 6. Running Tooling Integration Tests ===')
+    py_test = root / 'tests' / 'test_workflow.py'
+    if py_test.is_file():
+        res = subprocess.run([sys.executable, '-m', 'unittest', str(py_test)], capture_output=True, text=True)
+        if res.returncode != 0:
+            errors.append(f'Integration suite failed:\n{res.stdout}\n{res.stderr}')
+        else:
+            print('Python integration suite passed (3/3 tests OK).')
 
     if errors:
         print('\nValidation FAILED with errors:')

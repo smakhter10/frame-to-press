@@ -1,15 +1,15 @@
 ---
-name: wordpress-theme-visual-builder
-description: Converts an existing React, Next.js, Vue, Vite, static HTML/CSS/JS, or custom-coded website into an installable WordPress theme with high-fidelity design preservation and an integrated frametopress-style frontend visual editor. Use when asked to migrate a working website to WordPress, preserve its interactions and responsive design, add click-to-edit controls for text/images/buttons, create independent desktop/tablet/mobile edits, generate persistent CSS, integrate native WordPress/WooCommerce data, test, and deliver a theme ZIP. Do not use for greenfield WordPress designs without existing source files or for merely describing how WordPress works.
+name: frame-to-press
+description: Converts an existing React, Next.js, Vue, Vite, static HTML/CSS/JS, or custom-coded website into an installable WordPress theme with high-fidelity design preservation and an integrated FrameToPress frontend visual editor. Use when asked to migrate a working website to WordPress, preserve its interactions and responsive design, add click-to-edit controls for text/images/buttons, create independent desktop/tablet/mobile edits, generate persistent CSS, integrate native WordPress/WooCommerce data, test, and deliver a theme ZIP. Do not use for greenfield WordPress designs without existing source files or for merely describing how WordPress works.
 compatibility: Requires agent filesystem access and shell/code execution to inspect and build source files. PHP, Node and a WordPress staging environment are recommended for final verification; Playwright/Chromium optional for browser QA.
 metadata:
   version: "1.0.0"
-  reference: "frametopress V3.2 Visual Builder"
+  reference: "FrameToPress V3.2 Visual Builder"
 ---
 
-# Convert source website to WordPress + built-in responsive Visual Builder
+# FrameToPress: Convert source website to WordPress + built-in responsive Visual Builder
 
-This skill is a **build-and-verify workflow**, not a prose answer. When the user provides a website's source or working repository and requests a conversion, produce a real installable WordPress theme and tests. Preserve design and behavior. Use the **working frametopress V3.2 editor pattern** but NEVER reuse its cannabis branding, page content, product data, images, or theme-specific behavior in unrelated sites.
+This skill is a **build-and-verify workflow**, not a prose answer. When the user provides a website's source or working repository and requests a conversion, produce a real installable WordPress theme and tests. Preserve design and behavior. Use the **working FrameToPress V3.2 editor pattern** but NEVER reuse client-specific branding, page content, product data, images, or theme-specific behavior in unrelated sites.
 
 ## Inputs and authority
 
@@ -23,10 +23,10 @@ Required: access to the original site source (or downloaded/exportable source pl
 - [Builder architecture and persistence contract](references/VISUAL-BUILDER.md): edit UI, device iframe, serialization bug, CSS save, review and permissions. **Mandatory whenever implementing the editor.**
 - [QA and acceptance test matrix](references/QA.md): how to prove saved changes survive publish/reload, media queries, WooCommerce checks.
 - [WordPress features and security](references/WP-INTEGRATION.md): forms, CMS fields, WooCommerce, hooks, security, theme-update strategy.
-- [Reference-source adaptation guide](references/REFERENCE-CODE.md): how to adapt bundled frametopress V3.2 code without importing branded functionality.
+- [Reference-source adaptation guide](references/REFERENCE-CODE.md): how to adapt bundled FrameToPress V3.2 code without importing branded functionality.
 - [Quick setup across hosts](references/INSTALL.md): Claude, Codex/ChatGPT, Antigravity; platform paths and usage.
 
-The `assets/frametopress-v3.2-reference/` folder contains the **real v3.2 PHP, JS and CSS of the working page builder**. They are **study/porting references, not drop-in generic files**. They have `frametopress_` hooks, specific selectors, options, fonts, and page identification. Adapt and namespace them, keep their persistence and responsive logic, and remove frametopress-only assumptions.
+The `assets/frametopress-v3.2-reference/` folder contains the **real v3.2 PHP, JS and CSS of the working page builder**. They are **study/porting references, not drop-in generic files**. They have `frametopress_` hooks, specific selectors, options, fonts, and page identification. Adapt and namespace them, keep their persistence and responsive logic, and remove client-specific assumptions.
 
 ## Core workflow
 
@@ -57,12 +57,12 @@ Add device icons at the top: **Desktop (1280px), Tablet (820px), Mobile (390px)*
 
 ### 5 — Implement canonical persistence (non-negotiable)
 
-Use page-scoped records keyed by stable element ID. Empty edit dictionaries must serialize as JSON objects `{}` **NEVER** `[]`. The frametopress V3.0 bug was exactly this: JS added keyed properties to an array and `JSON.stringify` dropped them, falsely saving **0 elements**. Normalize legacy PHP/JS representations before any merge, track dirty values, and compute a fresh snapshot from the visible fields on Publish.
+Use page-scoped records keyed by stable element ID. Empty edit dictionaries must serialize as JSON objects `{}` **NEVER** `[]`. The FrameToPress V3.0 bug was exactly this: JS added keyed properties to an array and `JSON.stringify` dropped them, falsely saving **0 elements**. Normalize legacy PHP/JS representations before any merge, track dirty values, and compute a fresh snapshot from the visible fields on Publish.
 
 Publish transaction must:
 1. Validate authorization and nonce, reject invalid or zero-element accidental saves, sanitize CSS values / content / identifiers.
 2. Save canonical records in WP and compile scoped desktop/tablet/mobile CSS.
-3. Write CSS to a controlled managed section of the theme's `style.css` **when writable** (matching frametopress), with atomic file writing and errors. For read-only/managed themes use a dedicated persistent stylesheet in uploads, and enqueue it last with cache busting. Never silently claim successful writes when they failed.
+3. Write CSS to a controlled managed section of the theme's `style.css` **when writable** (matching FrameToPress), with atomic file writing and errors. For read-only/managed themes use a dedicated persistent stylesheet in uploads, and enqueue it last with cache busting. Never silently claim successful writes when they failed.
 4. Verify persisted records with an independent readback request (and revision/checksum where possible) before announcing success.
 5. Keep preview in place on error; don't discard a user edit or show a false success. The real CSS, not stale JS/inline overrides, must control published style.
 6. Restore text and image content safely from canonical storage, and confirm no flash-then-revert. Theme updates must not delete canonical records; document how managed CSS is rebuilt.
