@@ -54,6 +54,10 @@ lerna-debug.log*
 *.cert
 
 # Test outputs, reports, and generated archives
+.coverage
+htmlcov/
+.cache/
+*.log
 *.zip
 *.tar.gz
 audit.json
