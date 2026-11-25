@@ -85,5 +85,41 @@ class TestFrameToPressTools(unittest.TestCase):
             self.assertTrue(zip_dest.is_file())
             self.assertGreater(zip_dest.stat().st_size, 100)
 
+    def test_skill_metadata_and_editor_references(self):
+        """The v1.1 editor spec must be reachable from SKILL.md and normative."""
+        skill_md = (SKILL_DIR / 'SKILL.md').read_text(encoding='utf-8')
+        # Skill identity is stable and matches the folder name (install/discovery).
+        self.assertIn('name: frame-to-press', skill_md)
+        self.assertIn('version: "1.1.0"', skill_md)
+        for ref_name in ('editor-experience.md', 'editor-validation.md'):
+            # SKILL.md must link the reference with a resolvable relative path.
+            self.assertIn(f'references/{ref_name}', skill_md)
+            ref_path = SKILL_DIR / 'references' / ref_name
+            self.assertTrue(ref_path.is_file(), f'Missing reference: {ref_name}')
+        experience = (SKILL_DIR / 'references' / 'editor-experience.md').read_text(encoding='utf-8')
+        # Brand adaptation is the core requirement: palette derives from the
+        # site, layout stays consistent, contrast is checked.
+        self.assertIn('EditorTheme', experience)
+        self.assertIn('contrast', experience.lower())
+        validation = (SKILL_DIR / 'references' / 'editor-validation.md').read_text(encoding='utf-8')
+        # Acceptance must require real persistence proof and honest reporting.
+        self.assertIn('Publish', validation)
+        self.assertIn('NOT RUN', validation)
+        self.assertIn('17/20', validation)
+
+    def test_install_skill_includes_editor_references(self):
+        """Installing the skill must deliver the editor spec to the agent."""
+        script = SCRIPTS_DIR / 'install_skill.py'
+        with tempfile.TemporaryDirectory() as tmpdir:
+            res = subprocess.run(
+                [sys.executable, str(script), 'claude', '--scope', 'project', '--project', tmpdir],
+                capture_output=True, text=True
+            )
+            self.assertEqual(res.returncode, 0, f"install_skill failed:\n{res.stdout}\n{res.stderr}")
+            installed = Path(tmpdir) / '.claude' / 'skills' / 'frame-to-press'
+            self.assertTrue((installed / 'SKILL.md').is_file())
+            self.assertTrue((installed / 'references' / 'editor-experience.md').is_file())
+            self.assertTrue((installed / 'references' / 'editor-validation.md').is_file())
+
 if __name__ == '__main__':
     unittest.main()

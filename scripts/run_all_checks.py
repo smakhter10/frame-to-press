@@ -69,7 +69,7 @@ def main():
         if res.returncode != 0:
             errors.append(f'Integration suite failed:\n{res.stdout}\n{res.stderr}')
         else:
-            print('Python integration suite passed (3/3 tests OK).')
+            print('Python integration suite passed.')
 
     if errors:
         print('\nValidation FAILED with errors:')
