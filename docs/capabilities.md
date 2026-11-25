@@ -23,6 +23,8 @@ A factual summary of what FrameToPress covers. Three categories are used:
 | Next.js sources | Workflow requirement, partial by nature | Static/exportable routes convert; server actions, auth, SSR need scoped replacements — a theme alone cannot replicate an unknown backend |
 | Vue / Svelte sources | Workflow requirement | Same presentational-vs-island decision as React |
 | Click-to-edit text/images/buttons | Workflow requirement | Authorized users only; stable `data-vb-id` element IDs |
+| Professional, brand-adaptive editor shell | Workflow requirement (skill v1.1.0) | Normative spec in `frame-to-press/references/editor-experience.md`: consistent layout/controls across sites, palette derived from the site's brand tokens, contrast-safe chrome |
+| Editor acceptance gates + quality rubric | Workflow requirement (skill v1.1.0) | `frame-to-press/references/editor-validation.md`: hard gates plus a visual-quality rubric (ship target ≥ 17/20) assessed from real browser screenshots; NOT RUN if no browser/WordPress environment |
 | Device-specific editing (1280/820/390 iframe) | Workflow requirement | Real iframe viewports, not CSS scaling |
 | Persistent publish + readback verification | Workflow requirement | Required regression in `references/QA.md` |
 | WooCommerce integration | Environment-dependent | Requires WooCommerce and a staging site; native cart/checkout semantics preserved; payment gateways need sandbox configuration to be tested |

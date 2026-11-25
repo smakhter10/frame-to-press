@@ -52,6 +52,18 @@ environment (for example, a WordPress staging site).
   (`package_theme.py`) — **verified** by the integration tests in `tests/`.
 
 ### Frontend visual editing
+- A **consistent, professional editor shell with a brand-adaptive palette**
+  (skill v1.1.0): the layout, controls, and terminology stay the same across
+  generated websites — top toolbar with a segmented Desktop/Tablet/Mobile
+  switcher and viewport readout, a large page stage, and a floating or
+  dockable inspector with human-readable element labels — while the editor's
+  accent colours are derived from each site's own design tokens and adjusted
+  to stay contrast-safe. The normative specification is
+  [`frame-to-press/references/editor-experience.md`](frame-to-press/references/editor-experience.md),
+  with acceptance gates and a visual-quality rubric (ship target ≥ 17/20) in
+  [`frame-to-press/references/editor-validation.md`](frame-to-press/references/editor-validation.md).
+  These are requirements for editors the agent generates; they are not a
+  retrofit of any already-generated theme.
 - Click-to-edit for text, images, backgrounds, and buttons, restricted to
   authorized users (default capability: `edit_theme_options`).
 - Real same-origin iframe device previews — Desktop 1280px, Tablet 820px,
@@ -244,6 +256,8 @@ on every push and pull request (`.github/workflows/ci.yml`).
 - [Troubleshooting](docs/troubleshooting.md)
 - Skill references (inside the package): [migration](frame-to-press/references/MIGRATION.md),
   [visual builder](frame-to-press/references/VISUAL-BUILDER.md),
+  [editor experience spec](frame-to-press/references/editor-experience.md),
+  [editor validation](frame-to-press/references/editor-validation.md),
   [WordPress integration](frame-to-press/references/WP-INTEGRATION.md),
   [QA](frame-to-press/references/QA.md),
   [install reference](frame-to-press/references/INSTALL.md)
