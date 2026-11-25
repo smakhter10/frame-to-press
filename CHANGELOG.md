@@ -10,6 +10,23 @@ The skill's version is recorded in the `metadata.version` field of
 ## [Unreleased]
 
 ### Added
+- **Brand-adaptive visual editor specification (skill v1.1.0):** two new
+  normative references in the skill package —
+  `frame-to-press/references/editor-experience.md` (consistent professional
+  editor shell: top toolbar, segmented Desktop/Tablet/Mobile switcher,
+  floating/dockable inspector, human-readable element labels, contextual
+  controls, and a contrast-safe palette derived from each site's own brand
+  tokens) and `frame-to-press/references/editor-validation.md` (hard
+  acceptance gates, a visual-quality rubric with a ≥ 17/20 ship target, a
+  mandatory scenario suite, and a screenshot review set). `SKILL.md` now
+  mandates both references for editor work, adds explicit save-state and
+  draft/publish requirements, and covers animation-aware editing for
+  pinned/GSAP scenes. This is a skill requirements and quality-standard
+  update: it does not mean previously generated WordPress editors have been
+  retrofitted or retested against the new standard.
+- Tests covering the new references: skill metadata/reference resolution
+  and an installation test proving both references are delivered when the
+  skill is installed.
 - Professional root `README.md` describing the project, its workflow,
   installation, and limitations.
 - `docs/` — installation, quick-start, architecture, capabilities, and
